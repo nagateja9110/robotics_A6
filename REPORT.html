@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Assistive Robot Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Modern Color Scheme & Global Styles */
+        :root {
+            --primary: #3a86ff;
+            --secondary: #ff006e;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --accent: #8338ec;
+            --success: #06d6a0;
+            --warning: #ffbe0b;
+            --light-gray: #e9ecef;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 70px;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+
+        /* Header and Navigation */
+        header {
+            background-color: var(--dark);
+            color: white;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-container h1 {
+            font-size: 22px;
+            color: white;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 260px;
+            background-color: white;
+            border-right: 1px solid var(--light-gray);
+            height: calc(100vh - 70px);
+            position: sticky;
+            top: 70px;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            padding: 25px 0;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+        }
+
+        .sidebar ul li {
+            margin: 5px 0;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: var(--dark);
+            font-size: 16px;
+            padding: 12px 25px;
+            display: block;
+            border-left: 4px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-x: hidden;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 50px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+            position: relative;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 8px 8px 0 0;
+        }
+
+        .section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+        }
+
+        .section h2 i {
+            margin-right: 12px;
+            color: var(--accent);
+        }
+
+        .section h3 {
+            font-size: 20px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .section h3 i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .section p {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #4a4a4a;
+        }
+
+        /* Lists Styling */
+        .section ul, .section ol {
+            list-style-position: inside;
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section ul li, .section ol li {
+            margin: 12px 0;
+            line-height: 1.6;
+        }
+
+        /* Table Styling */
+        .section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .section table th {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .section table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .section table tr:nth-child(even) {
+            background-color: var(--light);
+        }
+
+        .section table tr:hover {
+            background-color: rgba(58, 134, 255, 0.05);
+        }
+
+        /* Feature Cards */
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            border-top: 4px solid var(--primary);
+        }
+
+        .feature-card:hover {
+            transform: translate mooieY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        .feature-card h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                z-index: 999;
+                padding: 20px 0;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+                transition: left 0.3s ease;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .feature-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .section table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        /* Utility Classes */
+        .highlight {
+            background-color: rgba(255, 190, 11, 0.2);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .text-primary { color: var(--primary); }
+        .text-accent { color: var(--accent); }
+        .text-success { color: var(--success); }
+        .text-warning { color: var(--warning); }
+        .text-secondary { color: var(--secondary); }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--accent);
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo-img">
+                <i class="fas fa-robot"></i>
+            </div>
+            <h1>Autonomous Assistive Robot Project</h1>
+        </div>
+        <button class="mobile-menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar" id="sidebar">
+            <ul>
+                <li><a href="#abstract"><i class="fas fa-file-alt"></i> Abstract</a></li>
+                <li><a href="#table-of-contents"><i class="fas fa-list"></i> Table of Contents</a></li>
+                <li><a href="#introduction"><i class="fas fa-info-circle"></i> Introduction</a></li>
+                <li><a href="#literature-review"><i class="fas fa-book"></i> Literature Review</a></li>
+                <li><a href="#methodology"><i class="fas fa-tasks"></i> Methodology</a></li>
+                <li><a href="#results"><i class="fas fa-chart-bar"></i> Results & Discussion</a></li>
+                <li><a href="#demo"><i class="fas fa-video"></i> Demo</a></li>
+                <li><a href="#conclusion"><i class="fas fa-flag-checkered"></i> Conclusion</a></li>
+                <li><a href="#references"><i class="fas fa-bookmark"></i> References</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Abstract -->
+            <div id="abstract" class="section">
+                <h2><i class="fas fa-file-alt"></i> Abstract</h2>
+                <p>
+                    This project presents the design and development of an autonomous assistive robot capable of visually tracking a human and responding to voice commands in real time. Built with a modular architecture, the system integrates computer vision, control systems, and web technologies to enable both autonomous navigation and remote operation.
+                </p>
+                <p>
+                    The robot uses YOLOv5 for human detection, combined with Kalman filtering and ADMM-based optimization for smooth tracking and trajectory refinement. A PID controller manages motion dynamics, while an FFT-enhanced voice interface allows intuitive verbal commands like "follow me" or "stop."
+                </p>
+                <p>
+                    To extend usability, a web-based interface provides live video streaming and remote control functionalities, allowing caregivers or users to monitor and guide the robot through a browser.
+                </p>
+                <p>
+                    The solution is designed for real-world indoor applications requiring interactive human-following, assistive support, and remote oversight, showcasing a scalable model for intelligent home robotics.
+                </p>
+            </div>
+
+            <!-- Table of Contents -->
+            <div id="table-of-contents" class="section">
+                <h2><i class="fas fa-list"></i> Table of Contents</h2>
+                <ul>
+                    <li><a href="#abstract">Abstract</a></li>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#literature-review">Literature Review / Related Work</a></li>
+                    <li><a href="#methodology">Methodology & Implementation</a></li>
+                    <li><a href="#results">Results and Discussion</a></li>
+                    <li><a href="#demo">Demo of Simulation and/or Hardware</a></li>
+                    <li><a href="#conclusion">Conclusion and Future Work</a></li>
+                    <li><a href="#references">References</a></li>
+                </ul>
+            </div>
+
+            <!-- Introduction -->
+            <div id="introduction" class="section">
+                <h2><i class="fas fa-info-circle"></i> Introduction</h2>
+                <h3><i class="fas fa-glasses"></i> Overview</h3>
+                <p>
+                    In a world increasingly driven by automation and intelligent systems, the integration of smart robotics with intuitive human interaction opens up vast possibilities across daily living, security, and personal assistance. This project explores the development of a vision-guided, voice-responsive mobile robot capable of tracking and interacting with a human target in real time.
+                </p>
+                <p>
+                    The system combines deep learning-based human detection, adaptive motion control, and remote accessibility through a web-based interface. Its core strength lies in its ability to understand and respond to the environment—enabling applications in personal robotics, home automation, and indoor navigation support where touchless interaction is key.
+                </p>
+                
+                <h3><i class="fas fa-exclamation-triangle"></i> Problem Statement</h3>
+                <p>
+                    Modern living environments often demand multitasking, safety, and accessibility enhancements. Whether in smart homes, research labs, or service environments, there is a growing demand for autonomous systems that can follow a designated individual, interpret voice commands, and adapt their path dynamically.
+                </p>
+                <p>
+                    Conventional robots often rely on predefined paths or manual control, limiting their flexibility. This project addresses the need for a real-time interactive robot that not only follows human movement but also allows for seamless voice-driven task switching and remote operation via a live web interface.
+                </p>
+                <p>
+                    By integrating multiple AI modules—vision, audio, and optimization—the robot serves as a prototype for next-generation autonomous companions that operate in unpredictable indoor settings.
+                </p>
+                
+                <h3><i class="fas fa-bullseye"></i> Objectives</h3>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <i class="fas fa-street-view"></i>
+                        <h4>Human Detection & Following</h4>
+                        <p>Design a system capable of detecting a person using computer vision and following them accurately within indoor environments.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-microphone-alt"></i>
+                        <h4>Voice-Based Command Processing</h4>
+                        <p>Enable natural control through spoken words, allowing the user to instruct the robot to "follow" or "stop" without physical interaction.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-cogs"></i>
+                        <h4>Smart Motion Control</h4>
+                        <p>Implement a robust control pipeline involving Kalman filtering, PID control, and ADMM-based optimization to ensure stable navigation.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-globe"></i>
+                        <h4>Remote Monitoring Platform</h4>
+                        <p>Provide a web interface that streams the robot's live camera feed and allows observers to supervise its actions from any connected device.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Literature Review -->
+            <div id="literature-review" class="section">
+                <h2><i class="fas fa-book"></i> Literature Review / Related Work</h2>
+                <p>
+                    This section explores relevant research that informs the design and development of our autonomous human-following robot. The following papers provide insight into various components such as visual tracking, object detection, voice interaction, and remote monitoring.
+                </p>
+                <h3><i class="fas fa-table"></i> Table 4.1: Literature Review Summary</h3>
+                <table>
+                    <tr>
+                        <th>Paper Title & Authors</th>
+                        <th>Key Contributions</th>
+                        <th>Methodology & Relevance</th>
+                    </tr>
+                    <tr>
+                        <td>A Vision-Based Human Following Robot for Indoor Environments<br>S. Satake et al., 2009</td>
+                        <td>1. Developed a human-following robot using monocular vision.<br>2. Balanced speed and accuracy for mobile devices.</td>
+                        <td>Utilized color and motion tracking from camera inputs. Relevant to our use of YOLO for camera-based indoor person tracking.</td>
+                    </tr>
+                    <tr>
+                        <td>YOLOv4: Optimal Speed and Accuracy of Object Detection<br>A. Bochkovskiy et al., 2020</td>
+                        <td>1. Enhanced real-time object detection using CNNs.<br>2. Achieved strong performance on edge devices.</td>
+                        <td>Our system incorporates YOLOv4 for real-time human detection on a Raspberry Pi, leveraging its efficiency for embedded systems.</td>
+                    </tr>
+                    <tr>
+                        <td>Voice Controlled Human Assistive Robot with Remote Monitoring System<br>T. S. Sudha et al., 2021</td>
+                        <td>1. Integrated voice commands in assistive robots.<br>2. Enabled caregiver monitoring.</td>
+                        <td>Similar to our voice-command processing and remote access through a web interface. Highlights importance of intuitive control.</td>
+                    </tr>
+                    <tr>
+                        <td>Teleoperated Assistive Robot with Live Video Streaming and Joystick Control<br>K. S. Raza et al., 2020</td>
+                        <td>1. Proposed joystick-based navigation.<br>2. Included a live video feed for better remote supervision.</td>
+                        <td>Closely aligns with our project's live web camera streaming and web-based control interface, though lacking smart interaction.</td>
+                    </tr>
+                    <tr>
+                        <td>Real-Time Human Detection and Tracking for Mobile Robots Using Deep Learning<br>Y. Zhang & H. Zhao, 2021</td>
+                        <td>1. Showcased accurate deep learning-based human tracking.<br>2. Applied methods to embedded systems.</td>
+                        <td>Validates our use of CNNs and YOLO for on-device real-time human tracking, but lacks user interactivity via voice/web.</td>
+                    </tr>
+                </table>
+                <h3><i class="fas fa-search"></i> Summary of Gaps in Literature</h3>
+                <ul>
+                    <li>Satake et al. focused on traditional vision techniques without leveraging modern deep learning for higher accuracy and robustness.</li>
+                    <li>Bochkovskiy et al. delivered a powerful object detection tool (YOLOv4), but did not contextualize its use within assistive robotics or remote interfaces.</li>
+                    <li>Sudha et al. emphasized voice control and monitoring, yet missed out on incorporating live control or scalable cloud integration.</li>
+                    <li>Raza et al. presented joystick-based remote control with camera streaming but did not support voice commands or smart autonomous tracking.</li>
+                    <li>Zhang & Zhao effectively applied deep learning to mobile platforms but did not explore human-robot interaction or user-centric interfaces.</li>
+                </ul>
+            </div>
+
+            <div id="methodology" class="section">
+                <h2><i class="fas fa-tasks"></i> Methodology & Implementation</h2>
+                
+                <h3><i class="fas fa-sitemap"></i> System Architecture Overview</h3>
+                <p>
+                    The robot is designed with a comprehensive workflow that enables real-time human tracking, adaptive navigation, and responsive control through both autonomous and remote interfaces.
+                </p>
+                <div style="text-align: center; margin: 20px 0;">
+                    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; display: inline-block;">
+                        <img src="Overview.png" width="750"\>
+                    </div>
+                </div>
+            
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <i class="fas fa-microchip"></i>
+                        <h4>Hardware Architecture</h4>
+                        <p>Raspberry Pi-based computing unit with camera module, motor drivers, audio interface, and Wi-Fi connectivity for remote access.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-brain"></i>
+                        <h4>Computer Vision</h4>
+                        <p>YOLOv5-powered person detection with Kalman filtering for prediction during occlusion or temporary visual loss.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-route"></i>
+                        <h4>Path Planning</h4>
+                        <p>ADMM optimization for smooth trajectory generation with dynamic obstacle consideration and efficient path execution.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-server"></i>
+                        <h4>Web Interface</h4>
+                        <p>Provide a web interface that streams the robot's live camera feed and allows observers to supervise its actions from any connected device.</p>
+                    </div>
+                </div>
+            
+                <h3><i class="fas fa-cogs"></i> Operational Workflow</h3>
+                <p>
+                    The robot follows a systematic operational workflow that transforms visual and audio inputs into intelligent movement:
+                </p>
+            
+                <div class="section" style="background-color: rgba(58, 134, 255, 0.05); margin: 20px 0; padding: 20px;">
+                    <h4><i class="fas fa-video"></i> Step 1: Capturing Video from the Webcam</h4>
+                    <p>
+                        The process begins with the onboard camera capturing a continuous stream of visual data:
+                    </p>
+                    <ul>
+                        <li>The webcam captures frames at a resolution of 640×480 pixels at approximately 30 frames per second</li>
+                        <li>Each frame is a 3D array (640×480×3) representing RGB pixel values for every point in the image</li>
+                        <li>The raw pixel data is transmitted to the Raspberry Pi via USB connection for processing</li>
+                    </ul>
+                    <p>
+                        This visual data forms the foundation for all subsequent detection and tracking functions.
+                    </p>
+                </div>
+            
+                <div class="section" style="background-color: rgba(131, 56, 236, 0.05); margin: 20px 0; padding: 20px;">
+                    <h4><i class="fas fa-microphone-alt"></i> Step 2: Listening for Voice Commands</h4>
+                    <p>
+                        In parallel with video processing, the system monitors audio input for voice commands:
+                    </p>
+                    <ul>
+                        <li>A microphone captures sound as a digital signal at a sampling rate of 16,000 Hz</li>
+                        <li>The signal undergoes Fast Fourier Transform (FFT) to separate frequency components:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="fft_formula.png" alt="FFT Formula" />
+                        <p style="font-size: 14px; color: #666;">FFT transforms time-domain signals to frequency-domain representation</p>
+                    </div>
+                    <ul>
+                        <li>High frequencies (>10 Hz) are filtered out to reduce noise, and the signal is reconstructed using inverse FFT</li>
+                        <li>A pre-trained keyword detection model identifies specific commands: "follow me" and "stop"</li>
+                    </ul>
+                    <p>
+                        This audio processing happens continuously, allowing for hands-free control of the robot.
+                    </p>
+                </div>
+            
+                <div class="section" style="background-color: rgba(255, 0, 110, 0.05); margin: 20px 0; padding: 20px;">
+                    <h4><i class="fas fa-comments"></i> Step 3: Processing Voice Commands</h4>
+                    <p>
+                        Detected voice commands determine the robot's operational state:
+                    </p>
+                    <ul>
+                        <li>Every 10 frames (~0.3 seconds), the system evaluates any detected commands</li>
+                        <li>The robot maintains a binary "following" state (True/False):
+                            <ul>
+                                <li>"follow me" sets following = True, activating the tracking and movement systems</li>
+                                <li>"stop" sets following = False and immediately halts the motors</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p>
+                        This state management system ensures responsive control through natural voice interaction.
+                    </p>
+                </div>
+            
+                <div class="section" style="background-color: rgba(6, 214, 160, 0.05); margin: 20px 0; padding: 20px;">
+                    <h4><i class="fas fa-user-check"></i> Step 4: Detecting a Person in the Frame</h4>
+                    <p>
+                        When in "following" mode, the system actively searches for human targets:
+                    </p>
+                    <ul>
+                        <li>Every 3 frames, the current image is analyzed using YOLOv5 for efficient processing</li>
+                        <li>YOLOv5 divides the image into a grid and predicts object classes and bounding boxes</li>
+                        <li>Results are filtered to retain only "person" class (class 0) detections with >50% confidence</li>
+                        <li>For each detected person, a bounding box [x₁, y₁, x₂, y₂] is identified</li>
+                        <li>The center point is calculated as:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="robotics (4).png" alt="Center Point Formula" width="280"/>
+                    </div>
+                    <p>
+                        This center point becomes the primary tracking target for the robot's navigation system.
+                    </p>
+                </div>
+            
+                <div class="section" style="background-color: rgba(255, 190, 11, 0.05); margin: 20px 0; padding: 20px;">
+                    <h4><i class="fas fa-chart-line"></i> Step 5: Smoothing Position with Kalman Filter</h4>
+                    <p>
+                        To handle detection noise and intermittent tracking loss, a Kalman filter is applied:
+                    </p>
+                    <ul>
+                        <li>The filter maintains a 4D state vector tracking both position and velocity:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="robotics (5).png" alt="State Vector" width="120"/>
+                    </div>
+                    <ul>
+                        <li>State transition matrix (F) models how the system evolves over time:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="robotics (6).png" alt="State Transition Matrix" width="150"/>
+                    </div>
+                    <ul>
+                        <li>Observation matrix (H) connects measurements to state variables:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="robotics (7).png" alt="Observation Matrix" width="150"/>
+                    </div>
+                    <ul>
+                        <li>The prediction step estimates the current state based on previous state:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="1.png" alt="Predict Step" width="120"/>
+                    </div>
+                    <ul>
+                        <li>The update step refines predictions using new measurements:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="2.png" alt="Update Step" width="200"/>
+                    </div>
+                    <p>
+                        This filtering produces a smoothed target position (Cx, Cy) that reduces jitter and maintains tracking during brief detection losses.
+                    </p>
+                </div>
+            
+                <div class="section" style="background-color: rgba(58, 134, 255, 0.05); margin: 20px 0; padding: 20px;">
+                    <h4><i class="fas fa-bezier-curve"></i> Step 6: Path Optimization with ADMM</h4>
+                    <p>
+                        The Alternating Direction Method of Multipliers (ADMM) calculates optimal movement paths:
+                    </p>
+                    <ul>
+                        <li>ADMM iteratively refines a trajectory between current position and target:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="ADMM.png" alt="ADMM Equation" width="750" />
+                    </div>
+                    <ul>
+                        discriminatory <li>The primal update optimizes the current position towards the target:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="robotics (8).png" alt="Primal Update" width="135"/>
+                        <img src="robotics (9).png" alt="Primal Update" width="180"/>
+                        <img src="robotics (10).png" alt="Primal Update" width="135"/>
+                    </div>
+                    <ul>
+                        <li>The dual update refines the Lagrange multiplier:</li>
+                    </ul>
+                    <div style="background-color: var(--light); padding: 15px; border-radius: 8px; text-align: center; margin: 10px 0; font-family: 'Courier New', monospace;">
+                        u = u + (x - z)
+                    </div>
+                    <ul>
+                        <li>Inverse kinematics converts optimized path to motor commands:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="INV.png" alt="Inverse Kinematics" width="750" />
+                    </div>
+                    <p>
+                        This optimization ensures smooth, efficient movement that accounts for the robot's physical constraints.
+                    </p>
+                </div>
+            
+                <div class="section" style="background-color: rgba(131, 56, 236, 0.05); margin: 20px 0; padding: 20px;">
+                    <h4><i class="fas fa-sliders-h"></i> Step 7: PID Control & Moving the Robot</h4>
+                    <p>
+                        The final step translates optimized positions into precise motor commands using PID control:
+                    </p>
+                    <ul>
+                        <li>The error between current and target position is calculated:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="robotics (13).png" alt="Error Calculation" width="180"/>
+                    </div>
+                    <ul>
+                        <li>Proportional term provides immediate response to current error:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="robotics (14).png" alt="Proportional Term" width="120"/>
+                    </div>
+                    <ul>
+                        <li>Integral term addresses accumulated error over time:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="robotics (1).png" alt="Integral Term" width="150"/>
+                    </div>
+                    <ul>
+                        <li>Derivative term responds to rate of error change:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="robotics (2).png" alt="Derivative Term" width="150"/>
+                    </div>
+                    <ul>
+                        <li>The combined PID output determines control signals:</li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="robotics (3).png" alt="PID Output" width="150"/>
+                    </div>
+                    <ul>
+                        <li>These signals generate two key outputs:
+                            <ul>
+                                <li><strong>Steering angle:</strong> Controls differential turning</li>
+                                <li><strong>Speed:</strong> Manages forward velocity</li>
+                            </ul>
+                        </li>
+                        <li>Special behavior cases include:
+                            <ul>
+                                <li>If no person is detected: robot rotates in place to search</li>
+                                <li>If "stop" command received: all motors immediately halt</li>
+                                <li>Forward kinematics translates desired motion into wheel velocities:</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="FK.png" alt="Forward Kinematics" width="750"/>
+                    </div>
+                    <p>
+                        This creates smooth, precise movement that maintains effective tracking while avoiding jerky or unstable motion.
+                    </p>
+                </div>
+            
+                <h3><i class="fas fa-wave-square"></i> Signal Processing (FFT Filter)</h3>
+                <p>
+                    Beyond voice command processing, FFT filtering is also applied to visual data to enhance detection quality:
+                </p>
+                <div style="text-align: center; font-size: 30px;">
+                    <img src="robotics (12).png" alt="FFT Formula" width="300"/><br>
+                </div>
+                <p>
+                    By converting spatial pixel values to the frequency domain, the system can:
+                </p>
+                <ul>
+                    <li>Retain low-frequency components representing meaningful visual shapes and structures</li>
+                    <li>Remove high-frequency components that typically correspond to noise</li>
+                    <li>Transform back to the spatial domain with cleaner, more processable images</li>
+                </ul>
+                <p>
+                    This preprocessing step significantly improves detection reliability in varying lighting conditions.
+                </p>
+            
+                <h3><i class="fas fa-laptop"></i> Web Application Interface</h3>
+                <p>
+                    The robot is equipped with a web interface that streams video and allows manual control, extending functionality beyond autonomous operation:
+                </p>
+                <p>
+                    Key features include:
+                </p>
+                <ul>
+                    <li>Live video stream from the onboard camera with visual overlays showing detection status</li>
+                    <li>Manual control buttons (forward, backward, left, right) for direct navigation</li>
+                    <li>Status indicators showing current operational mode and system health</li>
+                    <li>Command input interface for remote voice command simulation</li>
+                </ul>
+                <p>
+                    The web interface is built using:
+                </p>
+                <ul>
+                    <li>Node.js backend for handling WebSocket connections and robot communication</li>
+                    <li>Responsive frontend with real-time updates using JavaScript</li>
+                    <li>Cross-platform compatibility for access from any device with a modern browser</li>
+                </ul>
+                <p>
+                    This dual-mode control enhances usability in real-world environments, particularly for caregiving scenarios where remote monitoring and occasional intervention may be necessary.
+                </p>
+            </div>
+
+            <!-- Results -->
+            <div id="results" class="section">
+                <h2><i class="fas fa-chart-bar"></i> Results and Discussion</h2>
+                <h3><i class="fas fa-check-circle text-success"></i> System Performance</h3>
+                <p>
+                    The autonomous assistive robot was successfully developed and tested in controlled indoor environments. The hardware setup included:
+                </p>
+                <ul>
+                    <li><span class="text-primary">Raspberry Pi</span> as the central processing unit.</li>
+                    <li>A real-time <span class="text-primary">vision camera module</span> for human detection.</li>
+                    <li>A <span class="text-primary">motor driver circuit</span> connected to dual DC motors for movement, regulated via PWM signals.</li>
+                </ul>
+                <p>
+                    These components worked together to ensure stable mobility and perception.
+                </p>
+                
+                <h3><i class="fas fa-bullseye text-accent"></i> Human Tracking Accuracy</h3>
+                <p>
+                    Using the YOLOv5 object detection framework, the robot effectively identified and followed a target person:
+                </p>
+                <ul>
+                    <li><span class="text-accent">Kalman Filter</span> predicted the location of the person even when detection was intermittent.</li>
+                    <li><span class="text-accent">ADMM optimization</span> provided smooth trajectory updates, minimizing sudden turns or oscillations.</li>
+                    <li>The <span class="text-accent">PID controller</span> dynamically adjusted steering and speed, allowing real-time heading correction and velocity tuning.</li>
+                </ul>
+                <p>
+                    The result was a consistent and responsive human-following behavior, with minimal deviation from the target's path.
+                </p>
+                
+                <h3><i class="fas fa-comment-alt text-warning"></i> Voice Interaction</h3>
+                <p>
+                    The robot demonstrated reliable voice-command response using FFT-enhanced filtering:
+                </p>
+                <ul>
+                    <li>Commands like "<span class="text-warning">follow me</span>", "<span class="text-warning">stop</span>", and "<span class="text-warning">come here</span>" were recognized and executed promptly.</li>
+                    <li>In case of temporary visual loss, the robot re-oriented based on voice cues and re-engaged tracking autonomously.</li>
+                </ul>
+                <p>
+                    This multimodal control added flexibility and robustness to the system.
+                </p>
+                
+                <h3><i class="fas fa-globe text-secondary"></i> Web Interface and Remote Operation</h3>
+                <p>
+                    An integrated web-based companion application was developed for enhanced usability:
+                </p>
+                <ul>
+                    <li>Users could access a <span class="text-secondary">live video feed</span> from the robot's onboard camera.</li>
+                    <li><span class="text-secondary">Manual control options</span> such as directional buttons allowed caregivers or users to operate the robot over a local network.</li>
+                    <li>The interface was particularly useful in scenarios where autonomous tracking was momentarily ineffective or user intervention was required.</li>
+                </ul>
+                <p>
+                    This capability significantly extended the utility of the robot beyond autonomous operation, enabling remote situational awareness and control.
+                </p>
+                
+                <h3><i class="fas fa-thumbtack text-primary"></i> Discussion Summary</h3>
+                <ul>
+                    <li>The system performed reliably in indoor tracking tasks, with seamless coordination between detection, control, and optimization components.</li>
+                    <li>The use of real-time deep learning, signal filtering, and dynamic motor control led to a stable and responsive robot behavior.</li>
+                    <li>The web application added a crucial layer of interactivity, enhancing both usability and accessibility.</li>
+                </ul>
+            </div>
+
+            <!-- Demo -->
+            <div id="demo" class="section">
+                <h2><i class="fas fa-video"></i> Demo of Simulation and/or Hardware</h2>
+                <div style="text-align: center; margin: 30px 0;">
+                    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; display: import inline-block;">
+                        <video width="480" controls style="border-radius: 8px; margin-bottom: 15px;">
+                            <source src="sim.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <p style="font-weight: bold; margin-bottom: 10px;">Project Demonstration</p>
+                        <p>Simulation demonstration video showing the robot in action.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <i class="fas fa-robot"></i>
+                        <h4>Hardware Setup</h4>
+                        <img src="CD.png" width="400"\>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-desktop"></i>
+                        <h4>User Interface</h4>
+                        <p>Screenshots of the web interface showing  control buttons, and status indicators.</p>
+                        <img src="Web.png" width="400"\>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conclusion -->
+            <div id="conclusion" class="section">
+                <h2><i class="fas fa-flag-checkered"></i> Conclusion and Future Work</h2>
+                <h3><i class="fas fa-check-double"></i> Conclusion</h3>
+                <p>
+                    This project successfully demonstrates the design and implementation of an autonomous robot system that integrates human tracking, adaptive navigation, and remote accessibility. By combining visual detection via YOLO, motion optimization using ADMM, and signal enhancement through FFT filtering, the robot achieves reliable real-time tracking and smooth movement in dynamic indoor environments.
+                </p>
+                <p>
+                    The addition of a web-based companion interface enhances usability by enabling live video streaming and remote control. This makes the system suitable not only for assistive scenarios but also for broader applications such as smart indoor logistics, personal robotic companions, or educational robotics.
+                </p>
+                <p>
+                    The dual-mode architecture—Autonomous Mode for self-driven behavior and Remote Mode for manual intervention—makes the system flexible and robust in various real-world use cases.
+                </p>
+                
+                <h3><i class="fas fa-rocket"></i> Future Work</h3>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <i class="fas fa-eye"></i>
+                        <h4>Advanced Obstacle Avoidance</h4>
+                        <p>Integrate depth sensing (LiDAR or stereo vision) for safer navigation in complex environments.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <h4>SLAM Implementation</h4>
+                        <p>Add Simultaneous Localization and Mapping algorithms to build and navigate environment maps.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users"></i>
+                        <h4>Multi-Person Tracking</h4>
+                        <p>Extend tracking to handle multiple humans with proximity and identity-based prioritization.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-comments"></i>
+                        <h4>Voice Assistant Integration</h4>
+                        <p>Add natural language understanding and TTS responses for conversational interaction.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-battery-three-quarters"></i>
+                        <h4>Battery Management</h4>
+                        <p>Enable battery monitoring and autonomous return to charging station when needed.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-microchip"></i>
+                        <h4>Edge AI Optimization</h4>
+                        <p>Explore model pruning or quantization to improve inference speed and energy efficiency.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div id="references" class="section">
+                <h2><i class="fas fa-bookmark"></i> References</h2>
+                <ol class="references-list" style="padding-left: 25px; line-height: 1.8;">
+                    <li>
+                        S. Satake, S. Kanda, T. Kanda, D. Glas, M. Imai, and N. Hagita, "A Vision-Based Human-Following Robot for Indoor Environments," <em>Proceedings of the IEEE International Symposium on Robot and Human Interactive Communication</em>, 2009.
+                    </li>
+                    <li>
+                        A. Bochkovskiy, C. Y. Wang, and H. Y. M. Liao, "YOLOv4: Optimal Speed and Accuracy of Object Detection," <em>arXiv preprint arXiv:2004.10934</em>, 2020.
+                    </li>
+                    <li>
+                        T. S. Sudha, A. Muthamil Selvi, and S. Lavanya, "Voice Controlled Human Assistive Robot with Remote Monitoring System," <em>International Journal of Engineering Research & Technology (IJERT)</em>, vol. 10, no. 06, pp. 85–89, 2021.
+                    </li>
+                    <li>
+                        K. S. Raza, M. A. Bakar, and A. M. Azmi, "Teleoperated Assistive Robot with Live Video Streaming and Joystick Control," <em>International Journal of Advanced Computer Science and Applications (IJACSA)</em>, vol. 11, no. 6, 2020.
+                    </li>
+                    <li>
+                        Y. Zhang and H. Zhao, "Real-Time Human Detection and Tracking for Mobile Robots Using Deep Learning," <em>Journal of Intelligent & Robotic Systems</em>, vol. 101, no. 2, 2021.
+                    </li>
+                    <li>
+                        Jianjun N., "Deep Learning-Based Scene Understanding for Autonomous Robots," 2023. [Online]. Available: <a href="https://www.oaepublish.com/articles/ir.2023.22" target="_blank">https://www.oaepublish.com/articles/ir.2023.22</a>
+                    </li>
+                </ol>
+
+        
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p></p>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Back to Top Button
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
